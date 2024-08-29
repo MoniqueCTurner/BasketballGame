@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <style>
+ body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.game-container {
+    position: relative;
+    width: 400px;
+    height: 600px;
+    border: 2px solid #000;
+    background-color: #FFA500; /* Orange for the court */
+}
+
+.court {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* Allow clicks to pass through to the ball */
+}
+
+.three-point-line {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 300px;
+    height: 150px;
+    border-bottom: 2px solid #000;
+    border-radius: 50% 50% 0 0;
+}
+
+.foul-line {
+    position: absolute;
+    bottom: 150px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 50px;
+    border-bottom: 2px solid #000;
+    border-radius: 50% 50% 0 0;
+}
+
+.hoop {
+    position: absolute;
+    top: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 30px;
+    border: 2px solid #000;
+    border-radius: 50% 50% 0 0;
+    background-color: #ff0000;
+}
+
+.ball {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px; /* Adjusted for image size */
+    height: 50px; /* Adjusted for image size */
+    background-color: #000; /* Black color for the ball */
+    border-radius: 50%;
+    transition: bottom 0.5s ease-out, left 0.5s ease-out;
+}
+
+button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.score {
+    margin-top: 20px;
+    font-size: 24px;
+}
+</style>
+ <script>
+let score = 0;
+
+function shootBall() {
+    const ball = document.getElementById('ball');
+    const hoop = document.getElementById('hoop');
+    const hoopRect = hoop.getBoundingClientRect();
+    const ballRect = ball.getBoundingClientRect();
+    
+    const hoopCenterX = hoopRect.left + hoopRect.width / 2;
+    const ballCenterX = ballRect.left + ballRect.width / 2;
+
+    const distance = hoopCenterX - ballCenterX;
+    
+    ball.style.bottom = '500px';
+    ball.style.left = `calc(50% + ${distance}px)`;
+    
+    setTimeout(() => {
+        if (Math.abs(distance) < 20) {
+            updateScore();
+        }
+        ball.style.bottom = '30px';
+        ball.style.left = '50%';
+    }, 1000);
+}
+
+function updateScore() {
+    score++;
+    document.getElementById('score').textContent = score;
+}
+</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hoops for Fun</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="game-container">
+        <div class="court">
+            <div class="three-point-line"></div>
+            <div class="foul-line"></div>
+            <div class="hoop" id="hoop"></div>
+        </div>
+        <div class="ball" id="ball"></div>
+    </div>
+    <button onclick="shootBall()">Shoot!</button>
+    <div class="score">Score: <span id="score">0</span></div>
+    <script src="script.js"></script>
+</body>
+</html>
+
